@@ -1,9 +1,10 @@
 "use server";
-import { createAdminClient } from "./appwrite";
+import { createAdminClient, createSessionClient } from "./appwrite";
 import { appwriteConfig } from "./appwrite/config";
 import { Query, ID } from "node-appwrite";
 import { parseStringify } from "./utils";
 import { cookies } from "next/headers";
+import { avatarPlaceholderUrl } from "@/constants";
 
 const getUserByEmail = async (email: string) => {
   const { databases } = await createAdminClient();
@@ -59,8 +60,7 @@ export const createAccount = async ({
       data: {
         fullName,
         email,
-        avatar:
-          "https://imgs.search.brave.com/MMhX_fwxB_CXWHN83sjWFZ66JrnjfGoZ3WvI-5EAG6A/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wNDUv/OTQ0LzE5OS9zbWFs/bC9tYWxlLWRlZmF1/bHQtcGxhY2Vob2xk/ZXItYXZhdGFyLXBy/b2ZpbGUtZ3JheS1w/aWN0dXJlLWlzb2xh/dGVkLW9uLWJhY2tn/cm91bmQtbWFuLXNp/bGhvdWV0dGUtcGlj/dHVyZS1mb3ItdXNl/ci1wcm9maWxlLWlu/LXNvY2lhbC1tZWRp/YS1mb3J1bS1jaGF0/LWdyZXlzY2FsZS1p/bGx1c3RyYXRpb24t/dmVjdG9yLmpwZw",
+        avatar: avatarPlaceholderUrl,
         accountId,
       },
     });
@@ -92,4 +92,22 @@ export const verifySecret = async ({
   } catch (error) {
     handleError(error, "failed to verify otp");
   }
+};
+
+export const getCurrentUser = async () => {
+  const { databases, account } = await createSessionClient();
+
+  const result = await account.get();
+
+  const user = await databases.listRows({
+    databaseId: appwriteConfig.databaseId,
+    tableId: appwriteConfig.usersCollectionId,
+    queries: [Query.equal("accountId", result.$id)],
+  });
+
+  if (user.total <= 0) {
+    return null;
+  }
+
+  return parseStringify(user.rows[0]);
 };
