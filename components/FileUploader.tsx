@@ -1,7 +1,7 @@
 import React from "react";
 
 const FileUploader = () => {
-  return <div></div>;
+  return <div>Fileuploader</div>;
 };
 
 export default FileUploader;
