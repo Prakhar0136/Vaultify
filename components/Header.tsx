@@ -4,12 +4,18 @@ import Image from "next/image";
 import Search from "./Search";
 import FileUploader from "./FileUploader";
 
-const Header = () => {
+const Header = ({
+  userId,
+  accountId,
+}: {
+  userId: string;
+  accountId: string;
+}) => {
   return (
     <header className="header">
       <Search />
       <div className="header-wrapper">
-        <FileUploader />
+        <FileUploader ownerId={userId} accountId={accountId} />
         <form>
           <Button type="submit" className="sign-out-button">
             <Image
