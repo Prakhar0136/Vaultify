@@ -10,7 +10,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { sendEmailOTP } from "@/lib/user.actions";
+import { sendEmailOTP } from "@/lib/actions/user.actions";
 import {
   InputOTP,
   InputOTPGroup,
@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/input-otp";
 import Image from "next/image";
 import { useState } from "react";
-import { verifySecret } from "@/lib/user.actions";
+import { verifySecret } from "@/lib/actions/user.actions";
 import { useRouter } from "next/navigation";
 
 const OTPModal = ({
