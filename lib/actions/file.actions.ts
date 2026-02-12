@@ -13,14 +13,11 @@ const handleError = (error: unknown, message: string) => {
   throw error;
 };
 
-// lib/actions/file.actions.ts
-
 export const uploadFile = async ({
   file,
   ownerId,
   accountId,
   path,
-  // 👇 Destructure new props here
   fullName,
 }: UploadFileProps) => {
   const { storage, databases } = await createAdminClient();
@@ -166,8 +163,8 @@ export const renameFile = async ({
   try {
     const newName = `${name}.${extension}`;
     const updatedFile = await databases.updateRow({
-      databaseId: appwriteConfig.databaseId, // ✅ Fix 1 & 2: Use dot (.) and 'databaseId'
-      tableId: appwriteConfig.filesCollectionId, // ✅ Fix 3: Use dot (.)
+      databaseId: appwriteConfig.databaseId,
+      tableId: appwriteConfig.filesCollectionId,
       rowId: fileId,
       data: {
         name: newName,
