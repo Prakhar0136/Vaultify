@@ -13,11 +13,15 @@ const handleError = (error: unknown, message: string) => {
   throw error;
 };
 
+// lib/actions/file.actions.ts
+
 export const uploadFile = async ({
   file,
   ownerId,
   accountId,
   path,
+  // 👇 Destructure new props here
+  fullName,
 }: UploadFileProps) => {
   const { storage, databases } = await createAdminClient();
 
@@ -38,6 +42,9 @@ export const uploadFile = async ({
       extension: getFileType(bucketFile.name).extension,
       size: bucketFile.sizeOriginal,
       owner: ownerId,
+
+      ownerName: fullName,
+
       accountId,
       users: [],
       bucketFileId: bucketFile.$id,
@@ -45,6 +52,7 @@ export const uploadFile = async ({
 
     const newFile = await databases
       .createRow({
+        // (Or createDocument if using standard SDK)
         databaseId: appwriteConfig.databaseId,
         tableId: appwriteConfig.filesCollectionId,
         rowId: ID.unique(),

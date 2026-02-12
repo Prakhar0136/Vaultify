@@ -21,6 +21,8 @@ declare global {
     ownerId: string;
     accountId: string;
     path: string;
+    fullName: string;
+    avatar: string;
   }
   declare interface GetFilesProps {
     types: FileType[];
@@ -84,8 +86,9 @@ declare global {
     extension: string;
     url: string;
     size: number;
-    owner: string;
-    accountId: string;
+    owner: string; // 👈 Keep as string (User ID)
+    ownerName: string; // 👈 Add this
+    ownerAvatar: string;
     users: string[];
     bucketFileId: string;
   }

@@ -16,9 +16,17 @@ interface Props {
   ownerId: string;
   accountId: string;
   className?: string;
+  fullName: string;
+  avatar: string;
 }
 
-const FileUploader = ({ ownerId, accountId, className }: Props) => {
+const FileUploader = ({
+  ownerId,
+  accountId,
+  className,
+  fullName,
+  avatar,
+}: Props) => {
   const path = usePathname();
   const { toast } = useToast();
   const [files, setFiles] = useState<File[]>([]);
@@ -44,20 +52,25 @@ const FileUploader = ({ ownerId, accountId, className }: Props) => {
           });
         }
 
-        return uploadFile({ file, ownerId, accountId, path }).then(
-          (uploadedFile) => {
-            if (uploadedFile) {
-              setFiles((prevFiles) =>
-                prevFiles.filter((f) => f.name !== file.name),
-              );
-            }
-          },
-        );
+        return uploadFile({
+          file,
+          ownerId,
+          accountId,
+          path,
+          fullName,
+          avatar,
+        }).then((uploadedFile) => {
+          if (uploadedFile) {
+            setFiles((prevFiles) =>
+              prevFiles.filter((f) => f.name !== file.name),
+            );
+          }
+        });
       });
 
       await Promise.all(uploadPromises);
     },
-    [ownerId, accountId, path, toast],
+    [ownerId, accountId, path, toast, fullName, avatar],
   );
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });

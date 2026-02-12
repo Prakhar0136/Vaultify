@@ -7,15 +7,24 @@ import FileUploader from "./FileUploader";
 const Header = ({
   userId,
   accountId,
+  fullName,
+  avatar,
 }: {
   userId: string;
   accountId: string;
+  fullName: string;
+  avatar: string;
 }) => {
   return (
     <header className="header">
       <Search />
       <div className="header-wrapper">
-        <FileUploader ownerId={userId} accountId={accountId} />
+        <FileUploader
+          ownerId={userId}
+          accountId={accountId}
+          fullName={fullName}
+          avatar={avatar}
+        />
         <form>
           <Button type="submit" className="sign-out-button">
             <Image
