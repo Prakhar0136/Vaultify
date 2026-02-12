@@ -154,3 +154,29 @@ export const deleteFile = async ({
     handleError(error, "Failed to rename file");
   }
 };
+
+export const renameFile = async ({
+  fileId,
+  name,
+  extension,
+  path,
+}: RenameFileProps) => {
+  const { databases } = await createAdminClient();
+
+  try {
+    const newName = `${name}.${extension}`;
+    const updatedFile = await databases.updateRow({
+      databaseId: appwriteConfig.databaseId, // ✅ Fix 1 & 2: Use dot (.) and 'databaseId'
+      tableId: appwriteConfig.filesCollectionId, // ✅ Fix 3: Use dot (.)
+      rowId: fileId,
+      data: {
+        name: newName,
+      },
+    });
+
+    revalidatePath(path);
+    return parseStringify(updatedFile);
+  } catch (error) {
+    handleError(error, "failed to rename file");
+  }
+};
