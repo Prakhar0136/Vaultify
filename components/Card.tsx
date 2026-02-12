@@ -2,6 +2,7 @@ import Link from "next/link";
 import Thumbnail from "./Thumbnail";
 import { convertFileSize } from "@/lib/utils";
 import FormattedDatetime from "./FormattedDatetime";
+import ActionDropdown from "./ActionDropdown";
 
 const Card = ({ file }: { file: FileDocument }) => {
   console.log("File Owner Data:", file.owner);
@@ -17,7 +18,7 @@ const Card = ({ file }: { file: FileDocument }) => {
         />
 
         <div className="flex flex-col items-end justify-between">
-          ActionsDropdown ...
+          <ActionDropdown file={file} />
           <p className="body-1">{convertFileSize(file.size)}</p>
         </div>
       </div>
