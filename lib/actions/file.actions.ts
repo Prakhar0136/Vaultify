@@ -102,27 +102,6 @@ export const getFiles = async () => {
     handleError(error, "failed to fetch files");
   }
 };
-export const updateFileUsers = async ({
-  fileId,
-  emails,
-  path,
-}: UpdateFileUsersProps) => {
-  const { databases } = await createAdminClient();
-
-  try {
-    const updatedFile = await databases.updateRow({
-      databaseId: appwriteConfig.databaseId,
-      tableId: appwriteConfig.filesCollectionId,
-      rowId: fileId,
-      data: { users: emails },
-    });
-
-    revalidatePath(path);
-    return parseStringify(updatedFile);
-  } catch (error) {
-    handleError(error, "Failed to rename file");
-  }
-};
 
 export const deleteFile = async ({
   fileId,
@@ -175,5 +154,29 @@ export const renameFile = async ({
     return parseStringify(updatedFile);
   } catch (error) {
     handleError(error, "failed to rename file");
+  }
+};
+
+export const updateFileUsers = async ({
+  fileId,
+  emails,
+  path,
+}: UpdateFileUsersProps) => {
+  const { databases } = await createAdminClient();
+
+  try {
+    const updatedFile = await databases.updateRow({
+      databaseId: appwriteConfig.databaseId,
+      tableId: appwriteConfig.filesCollectionId,
+      rowId: fileId,
+      data: {
+        users: emails,
+      },
+    });
+
+    revalidatePath(path);
+    return parseStringify(updatedFile);
+  } catch (error) {
+    handleError(error, "failed to update file");
   }
 };
